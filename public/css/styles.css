@@ -1,0 +1,23 @@
+/* Shawn Addons */
+
+input, .dropinput {
+  border: 1px solid #cccccc;
+  color: #666666;
+  font-family: "Lucida Grande", "Lucida Sans Unicode", sans-serif;
+  font-size: 15px;
+  padding: 0px 4px;
+  margin: 4px 0 4px 4px;
+
+  height: 28px;
+
+}
+
+form {
+	margin-bottom: 20px;
+}
+
+form button {
+	float: right;
+	margin-left: 10px;
+}
+

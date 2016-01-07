@@ -1,0 +1,76 @@
+<% layout( 'layout' ) -%>
+
+<h1 id="page-title"><%= title %></h1>
+<div id="list">
+  <form action="/create" method="post" accept-charset="utf-8">
+    <div class="item-new">
+      <input class="input" type="text" name="content" />
+    </div>
+  </form>
+
+<% list.forEach( function ( item ){ %>
+  <% if( item._id == current ){ %>
+  <div class="item-new">
+  <% }else{ %>
+  <div class="item">
+  <% } %>
+
+    <% if( item._id == current ){ %>
+      <form action="/update/<%= item._id %>" method="post" accept-charset="utf-8">
+    <div class="item-new">
+    <table>
+      <tr>
+        <td>Quantity</td>
+        <td><input class="input" type="number" name="quantity" value="<%= item.quantity %>" /></td>
+      </tr>
+      <tr>
+        <td>Product</td>
+        <td><input class="input" type="text" name="productName" value="<%= item.productName %>" /></td>
+      </tr>
+      <tr>
+        <td>Dept</td>
+        <td>
+          <select name='dept'>
+            <% dept.forEach( function ( dept ){ %>
+              <% if(item.dept == dept.id){ %>
+                <option value="<%= dept.id %>" selected="selected"><%= dept.deptName %></option>
+              <% } else { %>
+                <option value="<%= dept.id %>"><%= dept.deptName %></option>
+              <% } %>
+            <% }); %>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>Store</td>
+        <td>
+          <select name='store'>
+            <% stores.forEach( function ( store ){ %>
+              <% if(item.store == store.storeName){ %>
+                <option value="<%= store.id %>" selected="selected"><%= store.storeName %></option>
+              <% } else { %>
+                <option value="<%= store.id %>"><%= store.storeName %></option>
+              <% } %>
+            <% }); %>
+          </select>
+        </td>
+      </tr>
+  </table>
+      <input class="button" type="submit" value="Save" />
+    </div>
+  </form>
+    <% }else{ %>
+    <a class="update-link" href="/edit/<%= item._id %>" title="Update this item item"><%= item.productName %></a>
+    <% } %>
+
+    <% if( item._id == current ){ %>
+
+    
+    <a class="del-btn-edit" href="/destroy/<%= item._id %>" title="Delete this todo item">Delete</a>
+    <% }else{ %>
+    <a class="del-btn" href="/destroy/<%= item._id %>" title="Delete this todo item">Delete</a>
+    <% } %>
+
+  </div>
+<% }); %>
+</div>
