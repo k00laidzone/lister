@@ -38,7 +38,7 @@ exports.create = function ( req, res, next ){
 
 exports.destroy = function ( req, res, next ){
   Lister.findById( req.params.id, function ( err, lister ){
-    lister.remove( function ( err, lister ){
+    lister.remove( function ( err, lister ) {
       if( err ) return next( err );
       res.redirect( '/' );
     });

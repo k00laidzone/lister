@@ -32,7 +32,7 @@
       <div class="panel panel-default">
         <div class="panel-heading"><h3 class="panel-title">Stores</h3></div>
           <div class="panel-body">
-          <table width="100%" border="0">
+          <table width="100%" border="0" class="table table-striped">
             <% stores.forEach( function ( item ){ %>
             <tr>
                 <td style="padding:5px"><a class="update-link" href="/editstore/<%= item._id %>" title="Update this store"><%= item.storeName %></a></td>
