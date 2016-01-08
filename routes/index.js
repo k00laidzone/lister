@@ -8,16 +8,37 @@ var async = require('async');
 
 exports.index = function ( req, res, next ){
   async.parallel({
-      modelAFind: function (cb){ Stores.find().exec(cb);},
-      modelBFind: function (cb){ Lister.find().exec(cb);},
-      modelCFind: function (cb){ Dept.find().exec(cb);}
+      stores: function (cb){ Stores.find().exec(cb);},
+      lister: function (cb){ Lister.find().exec(cb);},
+      dept: function (cb){ Dept.find().exec(cb);}
   }, function(err, result){
+
+    var list = [];
+    var lister = result.lister;
+    var dept = result.dept;
+    var stores = result.stores;
+
+    for(s in stores){
+      list.push({store:stores[s].storeName});
+      list[s].dept = [];
+        for(i in lister){
+          list[s].dept.push({dept:lister.dept});
+        }
+    };
+console.log(list);
+
+
       res.render( 'index', {
         title : 'Trish\'s Shopping List',
-        stores : result.modelAFind,
-        list : result.modelBFind,
-        dept: result.modelCFind
+        list : list
       });
+
+      // res.render( 'index', {
+      //   title : 'Trish\'s Shopping List',
+      //   stores : result.modelAFind,
+      //   list : result.modelBFind,
+      //   dept: result.modelCFind
+      // });
 
   }); 
 };
