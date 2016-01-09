@@ -2,16 +2,22 @@
 
 <div class="row">
     <div class="col-sm-4">
-  <form action="/createstore" method="post" accept-charset="utf-8">
+  <form action="/createdept" method="post" accept-charset="utf-8">
     <table width="100%">
-    <tr><td colspan=2> <strong>Create new store</strong> </td></tr>
+    <tr><td colspan=2> <strong>Create new department</strong> </td></tr>
       <tr>
-        <td>Store</td>
-        <td><input class="input" type="text" name="storeName" value="" /></td>
+        <td>Dept</td>
+        <td><input class="input" type="text" name="deptName" value="" /></td>
       </tr>
       <tr>
-        <td>Address</td>
-        <td><input class="input" type="text" name="address" /></td>
+        <td>Store</td>
+        <td>
+        <select name='newstore' class="dropinput">
+              <% stores.forEach( function ( item ){ %>
+                <option value="<%= item.id %>"><%= item.storeName %></option>
+              <% }); %>
+            </select>
+        </td>
       </tr>
       <tr><td colspan="2"><button type="submit" class="btn btn-xs btn-default">Add</button></td></tr>
    </table>
@@ -32,6 +38,17 @@
     
             <form class="update-form" action="/updatedept/<%= item._id %>" method="post" accept-charset="utf-8">
               <input class="update-input" type="text" name="deptName" value="<%= item.deptName %>" />
+              
+
+              <% stores.forEach( function ( store ){ %>
+                <% if(item.store.indexOf(store.id) > -1){ %>
+                  <input type="checkbox" name="storesel[]" checked value="<%= store.id %>"><%= store.storeName %><br> 
+                <% } else { %>
+                  <input type="checkbox" name="storesel[]" value="<%= store.id %>"><%= store.storeName %><br> 
+                <% } %>
+
+              <% }); %>
+
             <br>
             <button type="button" onClick="location.href='/destroydept/<%= item._id %>'" class="btn btn-xs btn-danger">Del</button>
               <button class="btn btn-xs btn-success right" type="submit">Save</button>

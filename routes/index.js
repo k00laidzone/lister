@@ -6,55 +6,79 @@ var Dept   = mongoose.model( 'Dept' );
 var util = require('util');
 var async = require('async');
 
+
 exports.index = function ( req, res, next ){
   async.parallel({
       stores: function (cb){ Stores.find().exec(cb);},
-      lister: function (cb){ Lister.find().exec(cb);},
-      dept: function (cb){ Dept.find().exec(cb);}
+      lister: function (cb){ Lister.find().populate('dept store').exec(cb);},
+      dept: function (cb){ Dept.find().populate({path: 'store'}).exec(cb);}
   }, function(err, result){
 
-    var list = [];
-    var lister = result.lister;
-    var dept = result.dept;
-    var stores = result.stores;
 
-    for(s in stores){
-      list.push({store:stores[s].storeName});
-      list[s].dept = [];
-        for(i in lister){
-          list[s].dept.push({dept:lister.dept});
-        }
-    };
-console.log(list);
+    var list    = [];
+    var lister  = result.lister;
+    var dept    = result.dept;
+    var stores  = result.stores;
 
+    // for(i in lister){
+    //   if(list.length == 0){
+    //     list.push({store:lister[i].store});
+    //   } else {
+    //     list[i].push({store:lister[i].store});
+    //   }
+
+    //   list[i].dept = [];
+    //   list[i].dept.push(lister[i].dept);
+
+    // };
+    // console.log(util.inspect(list, {depth:12}));
+
+    console.log(dept);
 
       res.render( 'index', {
         title : 'Trish\'s Shopping List',
-        list : list
+        stores : result.stores,
+        list : result.lister,
+        dept: result.dept
       });
-
-      // res.render( 'index', {
-      //   title : 'Trish\'s Shopping List',
-      //   stores : result.modelAFind,
-      //   list : result.modelBFind,
-      //   dept: result.modelCFind
-      // });
-
   }); 
 };
 
 exports.create = function ( req, res, next ){
+  async.parallel({
+      stores: function (cb){ Stores.find({_id: req.body.store}).exec(cb);},
+      lister: function (cb){ Lister.find().exec(cb);},
+      dept: function (cb){ Dept.find({_id: req.body.dept}).exec(cb);}
+  }, function(err, result){
+
+    console.log("ID: " + req.body.dept);
+    console.log(result.dept.length);
+
   new Lister({
       quantity   : req.body.quantity,
       productName: req.body.productName,
-      dept       : req.body.dept,
-      store      : req.body.store,
-      updated_at : Date.now()
+      dept       : result.dept,
+      store      : result.stores
   }).save( function ( err, todo, count ){
     if( err ) return next( err );
 
     res.redirect( '/' );
   });
+  }); 
+
+
+
+  // new Lister({
+  //     quantity   : req.body.quantity,
+  //     productName: req.body.productName,
+  //     dept       : req.body.dept,
+  //     store      : req.body.store,
+  //     updated_at : Date.now()
+  // }).save( function ( err, todo, count ){
+  //   if( err ) return next( err );
+
+  //   res.redirect( '/' );
+  // });
 };
 
 exports.destroy = function ( req, res, next ){
@@ -168,7 +192,7 @@ exports.destroystore = function ( req, res, next ){
 
 exports.dept = function( req, res){
   
-  Dept.find().exec(function ( err, dept ){
+  Dept.find().populate('store', 'storeName').exec(function ( err, dept ){
     res.render( 'dept', {
         title   : 'Trish\'s Shopping List',
         dept: dept
@@ -188,31 +212,64 @@ exports.createdept = function ( req, res, next ){
 
 
 exports.editdept = function( req, res, next ){
-
-  Dept.
-    find().
-    exec( function ( err, dept ){
-      if( err ) return next( err );
+  async.parallel({
+      Stores: function (cb){ Stores.find().exec(cb);},
+      Dept: function (cb){ Dept.find().exec(cb);}
+  }, function(err, result){
 
       res.render( 'editdept', {
-        title   : 'Trish\'s Shopping List',
-        dept    : dept,
+        title : 'Trish\'s Shopping List',
+        stores : result.Stores,
+        dept : result.Dept,
         current : req.params.id
       });
-    });
+
+  }); 
 };
 
+
+
+
+
+
+
 exports.updatedept = function( req, res, next ){
-  Dept.findById( req.params.id, function ( err, dept ){
-    dept.deptName = req.body.deptName,
+    //create the object from the list of stores
+    var fetchstring = [];
+    for (var i = 0; i < req.body.storesel.length; i++) {
+      fetchstring.push(req.body.storesel[i]);
+    };
+
+  async.parallel({
+    Dept: function(cb){Dept.findById(req.params.id).exec(cb);},
+    Stores: function (cb){ Stores.find({ '_id':{ $in: fetchstring }}).exec(cb);}
+  },
+  function(err, result){
+    
+    var dept = result.Dept;
+
+    dept.deptName = req.body.deptName;
+
+    //check that the store is not already in the list
+    for (var i = 0; i < result.Stores.length; i++) {
+      if(dept.store.indexOf(result.Stores[i].id) == -1){
+        dept.store.push(result.Stores[i].id);
+      }
+    };
 
     dept.save( function ( err, dept, count ){
       if( err ) return next( err );
       res.redirect( '/dept' );
     });
-
   });
+
 };
+
+
+
+
+
+
 
 exports.destroydept = function ( req, res, next ){
   Dept.findById( req.params.id, function ( err, dept ){

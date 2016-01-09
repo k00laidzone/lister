@@ -17,12 +17,21 @@
 		    </tr>
 		    <tr>
 		    	<td>Dept</td>
-		    	<td>
+		    	<td><select name='dept' class="dropinput"> 
+		    			<% dept.forEach( function ( dept ){ %>
+		    				<option value="<%= dept.id %>"><%= dept.deptName %></option>
+		    			<% }); %>
+		    		</select>
 		    	</td>
 		    </tr>
 		    <tr>
 		    	<td>Store</td>
 		    	<td>
+		    	<select name='store' class="dropinput">
+		    			<% stores.forEach( function ( item ){ %>
+		    				<option value="<%= item.id %>"><%= item.storeName %></option>
+		    			<% }); %>
+		    	</select>
 		    	</td>
 		    </tr>
 		    <tr>
@@ -34,14 +43,22 @@
 </div>
 
 
+<% stores.forEach( function ( store ){ %>
+    <div class="col-sm-4">
 
-
-
-<% list.forEach( function ( store ){ %>
-	    <div class="panel panel-default">
-        <div class="panel-heading"><h3 class="panel-title"><%= store.store %></h3></div>
+      <div class="panel panel-default">
+        <div class="panel-heading"><h3 class="panel-title"><%= store.storeName %></h3></div>
         <div class="panel-body">
+		<% list.forEach( function ( item ){ %>
+			<% if(item.store.indexOf(store.id) > -1){ %>
+				Store found!
+			<% } %>
+		<% }); %>
 
         </div>
-        </div>
+      </div>
+	</div>
+
+
 <% }); %>
+
