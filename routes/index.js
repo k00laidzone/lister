@@ -14,9 +14,17 @@ exports.index = function ( req, res, next ){
       dept: function (cb){ Dept.find().populate({path: 'store'}).exec(cb);}
   }, function(err, result){
 
+  var storetemp = result.stores[0].id;
+  var session = req.session;
+  if (session.store) {
+    //console.log("Store: "+session.store);
+    storetemp = session.store;
+  };
 
-
-    var storetemp = result.stores[0].id;
+  var depttemp = result.dept[0].id;
+  if (session.dept) {
+    depttemp = session.dept;
+  };
     var deptlist  = [];
     var lister    = result.lister;
     var dept      = result.dept;
@@ -32,11 +40,13 @@ exports.index = function ( req, res, next ){
       }
     };
       res.render( 'index', {
-        title : 'Trish\'s Shopping List',
-        stores : result.stores,
-        list : result.lister,
-        dept: result.dept,
-        deptmenu: deptlist
+        title         : 'Trish\'s Shopping List',
+        stores        : result.stores,
+        list          : result.lister,
+        dept          : result.dept,
+        deptmenu      : deptlist,
+        selecteddept  : depttemp,
+        selectedstore : storetemp
       });
   }); 
 };
@@ -47,16 +57,20 @@ exports.changestore = function ( req, res, next ){
       dept: function (cb){ Dept.find().populate({path: 'store'}).exec(cb);}
   }, function(err, result){
 
-    var storetemp = req.body.store;
-    var deptlist  = [];
-    var lister    = result.lister;
-    var dept      = result.dept;
-    var stores    = result.stores;
+    var session       = req.session;
+    var storetemp     = req.params.store;
+    session.store     = req.params.store;
+    session.dept      = req.params.dept;
+    console.log("Stored: "+req.params.dept);
+    var deptlist      = [];
+    var lister        = result.lister;
+    var dept          = result.dept;
+    var stores        = result.stores;
 
     console.log("Change Store Returned: "+req.params.store);
 
     var deptlist = [];
-    var storetemp = req.params.store;
+    //var storetemp = req.params.store;
     for (var i = 0; i < dept.length; i++) {
       if(dept[i].store.length > 0){
           for (var s = 0; s < dept[i].store.length; s++) {
@@ -78,9 +92,11 @@ exports.create = function ( req, res, next ){
       dept: function (cb){ Dept.find({_id: req.body.dept}).exec(cb);}
   }, function(err, result){
 
-    console.log("ID: " + req.body.dept);
-    console.log(result.dept.length);
+    // console.log("ID: " + req.body.dept);
+    // console.log(result.dept.length);
 
+  var session = req.session;
+  session.dept = req.body.dept;
   new Lister({
       quantity   : req.body.quantity,
       productName: req.body.productName,

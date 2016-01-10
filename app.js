@@ -6,32 +6,43 @@
 require( './db' );
 
 var express        = require( 'express' );
+var cookieParser   = require('cookie-parser');
+var session 	   = require('express-session');
 var http           = require( 'http' );
 var path           = require( 'path' );
 var engine         = require( 'ejs-locals' );
 var favicon        = require( 'serve-favicon' );
-var cookieParser   = require( 'cookie-parser' );
 var bodyParser     = require( 'body-parser' );
 var methodOverride = require( 'method-override' );
 var logger         = require( 'morgan' );
 var errorHandler   = require( 'errorhandler' );
 var static         = require( 'serve-static' );
 
-var app    = express();
-var routes = require( './routes' );
+var app    		   = express();
+var routes 		   = require( './routes' );
 
 
 // all environments
-app.set( 'port', process.env.PORT || 3001 );
+app.set( 'port', process.env.PORT || 3000 );
 app.engine( 'ejs', engine );
 app.set( 'views', path.join( __dirname, 'views' ));
 app.set( 'view engine', 'ejs' );
+app.use(cookieParser());
+app.use(session({
+  genid: function(req) {
+    return require('crypto').randomBytes(48).toString('hex'); // use UUIDs for session IDs 
+  },
+  secret: 'keyboard cat',
+  resave: true,
+  saveUninitialized: true
+}))
 app.use( favicon( __dirname + '/public/favicon.ico' ));
 app.use( logger( 'dev' ));
 app.use( methodOverride());
 app.use( cookieParser());
 app.use( bodyParser.json());
 app.use( bodyParser.urlencoded({ extended : true }));
+
 
 // Routes
 // /app.use( routes.current_user );
