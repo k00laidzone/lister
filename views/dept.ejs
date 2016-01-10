@@ -7,17 +7,25 @@
 
 <div class="row">
     <div class="col-sm-4">
-      <form action="/createdept" method="post" accept-charset="utf-8">
-        <table width="100%">
-        <td colspan=2> <strong>Create new department.</strong> </td>
-    	    <tr>
-    	    	<td>Department</td>
-    	    	<td><input class="input" type="text" name="deptName" value="" /></td>
-    	    </tr>
-          <tr><td colspan="2"><button type="submit" class="btn btn-xs btn-default">Add</button></td></tr>
-    	</table>
-      </form>
-  </div>
+  <form action="/createdept" method="post" accept-charset="utf-8">
+    <table width="100%">
+    <tr><td colspan=2> <strong>Create new department</strong> </td></tr>
+      <tr>
+        <td>Dept</td>
+        <td><input class="input" type="text" name="deptName" value="" /></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>
+              <% stores.forEach( function ( store ){ %>
+                  <input type="checkbox" name="storesel[]" value="<%= store.id %>"><%= store.storeName %><br> 
+            <% }); %>
+        </td>
+      </tr>
+      <tr><td colspan="2"><button type="submit" class="btn btn-xs btn-default">Add</button></td></tr>
+   </table>
+  </form>
+</div>
 </div>
 
 

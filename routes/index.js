@@ -15,32 +15,59 @@ exports.index = function ( req, res, next ){
   }, function(err, result){
 
 
-    var list    = [];
-    var lister  = result.lister;
-    var dept    = result.dept;
-    var stores  = result.stores;
 
-    // for(i in lister){
-    //   if(list.length == 0){
-    //     list.push({store:lister[i].store});
-    //   } else {
-    //     list[i].push({store:lister[i].store});
-    //   }
+    var storetemp = result.stores[0].id;
+    var deptlist  = [];
+    var lister    = result.lister;
+    var dept      = result.dept;
+    var stores    = result.stores;
 
-    //   list[i].dept = [];
-    //   list[i].dept.push(lister[i].dept);
-
-    // };
-    // console.log(util.inspect(list, {depth:12}));
-
-    console.log(dept);
-
+    for (var i = 0; i < dept.length; i++) {
+      if(dept[i].store.length > 0){
+          for (var s = 0; s < dept[i].store.length; s++) {
+            if(dept[i].store[s].id.indexOf(storetemp) > -1){
+              deptlist.push(dept[i]);
+            }
+          };
+      }
+    };
       res.render( 'index', {
         title : 'Trish\'s Shopping List',
         stores : result.stores,
         list : result.lister,
-        dept: result.dept
+        dept: result.dept,
+        deptmenu: deptlist
       });
+  }); 
+};
+
+exports.changestore = function ( req, res, next ){
+  async.parallel({
+      stores: function (cb){ Stores.find().exec(cb);},
+      dept: function (cb){ Dept.find().populate({path: 'store'}).exec(cb);}
+  }, function(err, result){
+
+    var storetemp = req.body.store;
+    var deptlist  = [];
+    var lister    = result.lister;
+    var dept      = result.dept;
+    var stores    = result.stores;
+
+    console.log("Change Store Returned: "+req.params.store);
+
+    var deptlist = [];
+    var storetemp = req.params.store;
+    for (var i = 0; i < dept.length; i++) {
+      if(dept[i].store.length > 0){
+          for (var s = 0; s < dept[i].store.length; s++) {
+            if(dept[i].store[s].id.indexOf(storetemp) > -1){
+              deptlist.push(dept[i]);
+            }
+          };
+      }
+    };
+
+      res.json(deptlist);
   }); 
 };
 
@@ -66,19 +93,6 @@ exports.create = function ( req, res, next ){
   });
   }); 
 
-
-
-  // new Lister({
-  //     quantity   : req.body.quantity,
-  //     productName: req.body.productName,
-  //     dept       : req.body.dept,
-  //     store      : req.body.store,
-  //     updated_at : Date.now()
-  // }).save( function ( err, todo, count ){
-  //   if( err ) return next( err );
-
-  //   res.redirect( '/' );
-  // });
 };
 
 exports.destroy = function ( req, res, next ){
@@ -191,22 +205,41 @@ exports.destroystore = function ( req, res, next ){
 
 
 exports.dept = function( req, res){
-  
-  Dept.find().populate('store', 'storeName').exec(function ( err, dept ){
+async.parallel({
+    Dept: function(cb){Dept.find().exec(cb);},
+    Stores: function (cb){ Stores.find().exec(cb);}
+  },
+  function(err, result){
     res.render( 'dept', {
         title   : 'Trish\'s Shopping List',
-        dept: dept
+        dept: result.Dept,
+        stores: result.Stores
       });
-  })
+
+  });
 
 };
 
 exports.createdept = function ( req, res, next ){
-  new Dept({
-      deptName   : req.body.deptName      
-  }).save( function ( err, dept, count ){
-    if( err ) return next( err );
-    res.redirect( '/dept' );
+    //create the object from the list of stores
+        console.log("Stores: " + req.body.storesel);
+    var fetchstring = [];
+    for (var i = 0; i < req.body.storesel.length; i++) {
+      fetchstring.push(req.body.storesel[i]);
+    };
+
+  async.parallel({
+    Stores: function (cb){ Stores.find({ '_id':{ $in: fetchstring }}).exec(cb);}
+  },
+  function(err, result){
+
+    new Dept({
+        deptName   : req.body.deptName,
+        store      : result.Stores
+    }).save( function ( err, dept, count ){
+      if( err ) return next( err );
+      res.redirect( '/dept' );
+    });
   });
 };
 
@@ -227,12 +260,6 @@ exports.editdept = function( req, res, next ){
   }); 
 };
 
-
-
-
-
-
-
 exports.updatedept = function( req, res, next ){
     //create the object from the list of stores
     var fetchstring = [];
@@ -247,7 +274,7 @@ exports.updatedept = function( req, res, next ){
   function(err, result){
     
     var dept = result.Dept;
-
+    dept.store = [];
     dept.deptName = req.body.deptName;
 
     //check that the store is not already in the list
