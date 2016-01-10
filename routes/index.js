@@ -106,18 +106,36 @@ exports.destroy = function ( req, res, next ){
 
 exports.edit = function( req, res, next ){
   async.parallel({
-      modelAFind: function (cb){ Stores.find().exec(cb);},
-      modelBFind: function (cb){ Lister.find().exec(cb);},
-      modelCFind: function (cb){ Dept.find().exec(cb);}
+      stores: function (cb){ Stores.find().exec(cb);},
+      lister: function (cb){ Lister.find().populate('dept store').exec(cb);},
+      dept: function (cb){ Dept.find().populate({path: 'store'}).exec(cb);}
   }, function(err, result){
+
+
+
+    var storetemp = result.stores[0].id;
+    var deptlist  = [];
+    var lister    = result.lister;
+    var dept      = result.dept;
+    var stores    = result.stores;
+
+    for (var i = 0; i < dept.length; i++) {
+      if(dept[i].store.length > 0){
+          for (var s = 0; s < dept[i].store.length; s++) {
+            if(dept[i].store[s].id.indexOf(storetemp) > -1){
+              deptlist.push(dept[i]);
+            }
+          };
+      }
+    };
       res.render( 'edit', {
-        title : 'Trish\'s Shopping List',
-        stores : result.modelAFind,
-        list : result.modelBFind,
-        dept : result.modelCFind,
+        title : 'Edit Item',
+        stores : result.stores,
+        list : result.lister,
+        dept: result.dept,
+        deptmenu: deptlist,
         current: req.params.id
       });
-
   }); 
 };
 

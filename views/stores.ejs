@@ -37,7 +37,7 @@
             <tr>
                 <td style="padding:5px"><a class="update-link" href="/editstore/<%= item._id %>" title="Update this store"><%= item.storeName %></a></td>
 
-                <td align="right"><button type="button" onClick="location.href='/destroydept/<%= item._id %>" class="btn btn-xs btn-danger">Del</button></td>
+                <td align="right"><button type="button" onClick="location.href='/destroystore/<%= item._id %>'" class="btn btn-xs btn-danger">Del</button></td>
             </tr>
             <% }); %>
             </table>

@@ -1,24 +1,17 @@
 <% layout( 'layout' ) -%>
 
-<h1 id="page-title"><%= title %></h1>
-<div id="list">
-  <form action="/create" method="post" accept-charset="utf-8">
-    <div class="item-new">
-      <input class="input" type="text" name="content" />
-    </div>
-  </form>
+<h2><%= title %></h2>
+
 
 <% list.forEach( function ( item ){ %>
-  <% if( item._id == current ){ %>
-  <div class="item-new">
-  <% }else{ %>
-  <div class="item">
-  <% } %>
-
     <% if( item._id == current ){ %>
-      <form action="/update/<%= item._id %>" method="post" accept-charset="utf-8">
-    <div class="item-new">
-    <table>
+    <div class="row">
+    <div class="col-sm-4">
+    <div class="panel panel-default">
+        <div class="panel-heading"><h3 class="panel-title">Edit <%= item.productName %></h3></div>
+          <div class="panel-body">
+    <form action="/update/<%= item._id %>" method="post" accept-charset="utf-8">
+    <table width="100%">
       <tr>
         <td>Quantity</td>
         <td><input class="input" type="number" name="quantity" value="<%= item.quantity %>" /></td>
@@ -28,9 +21,23 @@
         <td><input class="input" type="text" name="productName" value="<%= item.productName %>" /></td>
       </tr>
       <tr>
-        <td>Dept</td>
+        <td>Store</td>
         <td>
-          <select name='dept'>
+          <select name='store' id="store" class="dropinput">
+            <% stores.forEach( function ( store ){ %>
+              <% if(item.store == store.storeName){ %>
+                <option value="<%= store.id %>" selected="selected"><%= store.storeName %></option>
+              <% } else { %>
+                <option value="<%= store.id %>"><%= store.storeName %></option>
+              <% } %>
+            <% }); %>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>Departments</td>
+        <td>
+          <select name='dept' id="dept" class="dropinput">
             <% dept.forEach( function ( dept ){ %>
               <% if(item.dept == dept.id){ %>
                 <option value="<%= dept.id %>" selected="selected"><%= dept.deptName %></option>
@@ -42,35 +49,17 @@
         </td>
       </tr>
       <tr>
-        <td>Store</td>
-        <td>
-          <select name='store'>
-            <% stores.forEach( function ( store ){ %>
-              <% if(item.store == store.storeName){ %>
-                <option value="<%= store.id %>" selected="selected"><%= store.storeName %></option>
-              <% } else { %>
-                <option value="<%= store.id %>"><%= store.storeName %></option>
-              <% } %>
-            <% }); %>
-          </select>
-        </td>
+          <td colspan="2"><button type="button" onClick="location.href='/destroy/<%= item._id %>'" class="btn btn-xs btn-danger">Del</button>
+      <button class="btn btn-xs btn-success right" type="submit">Save</button></td>
       </tr>
-  </table>
-      <input class="button" type="submit" value="Save" />
-    </div>
+      </table>
   </form>
-    <% }else{ %>
-    <a class="update-link" href="/edit/<%= item._id %>" title="Update this item item"><%= item.productName %></a>
-    <% } %>
+  </div></div>
+  </div>
+  </div>
 
-    <% if( item._id == current ){ %>
-
-    
-    <a class="del-btn-edit" href="/destroy/<%= item._id %>" title="Delete this todo item">Delete</a>
-    <% }else{ %>
-    <a class="del-btn" href="/destroy/<%= item._id %>" title="Delete this todo item">Delete</a>
-    <% } %>
+  <% } %>
+  <% }); %>
 
   </div>
-<% }); %>
-</div>
+  </div>

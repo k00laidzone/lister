@@ -1,5 +1,5 @@
 $('#store').on('change',function(){
-  $.get('changestore/'+this.value,function(data){
+  $.get('/changestore/'+this.value,function(data){
      $('#dept').contents().remove();
      for(var j = 0; j < data.length; j++)
      {

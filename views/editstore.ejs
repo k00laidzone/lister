@@ -1,26 +1,6 @@
 <% layout( 'layout' ) -%>
 
 
-<div class="row">
-    <div class="col-sm-4">
-  <form action="/createstore" method="post" accept-charset="utf-8">
-    <table width="100%">
-    <tr><td colspan=2> <strong>Create new store<strong> </td></tr>
-      <tr>
-        <td>Store</td>
-        <td><input class="input" type="text" name="storeName" value="" /></td>
-      </tr>
-      <tr>
-        <td>Address</td>
-        <td><input class="input" type="text" name="address" /></td>
-      </tr>
-      <tr><td colspan="2"><button type="submit" class="btn btn-xs btn-default">Add</button></td></tr>
-   </table>
-  </form>
-</div>
-</div>
-
-
 <% stores.forEach( function ( item ){ %>
 
     <% if( item._id == current ){ %>
@@ -28,7 +8,7 @@
 <div class="row">
     <div class="col-sm-4">
       <div class="panel panel-default">
-        <div class="panel-heading"><h3 class="panel-title">Edit Store</h3></div>
+        <div class="panel-heading"><h3 class="panel-title">Edit <%= item.storeName %></h3></div>
           <div class="panel-body">
     
             <form action="/updatestore/<%= item._id %>" method="post" accept-charset="utf-8">
@@ -44,18 +24,6 @@
     </div>
 </div>
 
-
-    <% }else{ %>
-          <div class="row">
-    <div class="col-sm-4">
-        <table class="table table-striped">
-        <tr>
-        <td> <a href="/editstore/<%= item._id %>" title="Update this store"><%= item.storeName %></a> </td>
-        <td> <button style="float:right;" type="button" onClick="location.href='/destroystore/<%= item._id %>'" class="btn btn-xs btn-danger">Del</button> </td>
-        </tr>
-        </table>
-        </div>
-        </div>
     <% } %>
 
 
