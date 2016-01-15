@@ -1,0 +1,124 @@
+<% layout( 'layout' ) -%>
+
+
+<div class="row locked" style="background-color:#fff;">
+    <div class="col-md-4 col-sm-6 col-xs-12 some-notes">
+
+   	<% if (message.length > 0) { %>
+     <% for (var i = 0; i < message.length; i++) { %>
+       <div class="alert alert-danger"><%= message[i].msg %></div>
+     <% }; %>        
+    <% } %>
+
+  <form action="/create" method="post" accept-charset="utf-8">
+  <tr><td colspan=2> <strong>Create new shopping item</strong> </td></tr>
+	    <table width="100%" border="0">
+		    <tr>
+		    	<td>Quantity</td>
+		    	<td><input class="input" type="number" name="quantity" value="1" /></td>
+		    </tr>
+		    <tr>
+		    	<td>Product</td>
+		    	<td><input class="input" type="text" name="productName" /></td>
+		    </tr>
+		    <tr>
+		    	<td>Store</td>
+		    	<td>
+		    	<select id="store" name='store' class="dropinput">
+		    			<% stores.forEach( function ( item ){ %>
+		    			<%if (item.id == selectedstore) {;%>
+		    				<option value="<%= item.id %>" selected><%= item.storeName %></option>
+		    			<% } else { %>
+		    				<option value="<%= item.id %>"><%= item.storeName %></option>
+		    			<% } %>
+		    			<% }); %>
+		    	</select>
+		    	</td>
+		    </tr>
+		    <tr>
+		    	<td>Dept</td>
+		    	<td>
+		    		<select id="dept" name='dept' class="dropinput"> 
+		    			<% deptmenu.forEach( function ( dept ){ %>
+		    			<%if (dept.id == selecteddept) {;%>
+		    				<option value="<%= dept.id %>" selected><%= dept.deptName %></option>
+		    			<% } else { %>
+		    				<option value="<%= dept.id %>"><%= dept.deptName %></option>
+		    			<% } %>
+		    			<% }); %>
+		    		</select>
+		    	</td>
+		    </tr>
+		    <tr>
+		    	<td colspan="2"><button type="submit" class="btnadd btn-xs btn-default-add">Add</button></td>
+		    </tr>
+		</table>
+  </form>
+</div>
+</div>
+<div class="row"  style="margin-top:280px;">
+
+<% stores.forEach( function ( store ){ %>
+<% var checkstore = false; %>
+
+<% list.forEach( function ( item ){ %>
+
+	<% if(item.store.length > 0){ %>
+		<% item.store.forEach( function ( prod ){ %>
+			<% if(prod.id == store.id){ %>
+				<% checkstore = true; %>
+			<% } %>
+
+		<% }); %>
+	<% } %>
+<% }); %>
+
+<% if(checkstore == true){ %>
+      <div class="col-md-4 col-sm-6 col-xs-12 work-list">
+        <h3><%= store.storeName %></h3>
+        <div class="work-space">
+        
+		<% dept.forEach( function ( dept ){ %>
+
+		<% var checkdept = false; %>
+			<% list.forEach( function ( item ){ %>
+				<% item.dept.forEach( function ( itemdept ){ %>
+
+					<% if(itemdept.id == dept.id && store.id == item.store[0].id){ %>
+						<% checkdept = true; %>
+
+					<% } %>
+
+				<% }); %>
+
+			<% }); %>
+
+
+			<% if(checkdept == true){ %>
+				<h5><%= dept.deptName %></h5>
+				<table width="100%" border="0" class="table table-striped">
+				<% list.forEach( function ( item ){ %>
+
+					<% if(item.dept[0].id == dept.id && item.store[0].id == store.id){ %>
+					<tr>
+					<td style="padding:5px"><a class="update-link" href="/edit/<%= item._id %>" title="Update this shopping item"><%= item.productName %></a></td>
+					<td align="right"><a href="/destroy/<%= item._id %>"><img src="/images/x.png" width="15px"></a></td>
+					
+					</tr>
+					<% } %>
+
+				<% }); %>
+
+
+				</table>
+			<% } %>
+		<% }); %>
+
+        </div>
+      </div>
+
+<% } %>
+<% }); %>
+      </div>
+
+
