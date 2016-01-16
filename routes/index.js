@@ -31,7 +31,7 @@ functions.list = function ( req, res, next ){
   var session = req.session;
   var depttemp;
 
-  if (result.stores.length >= 0) {
+  if (result.stores.length > 0) {
     storetemp = result.stores[0].id;
   };
 
@@ -39,7 +39,7 @@ functions.list = function ( req, res, next ){
     storetemp = session.store;
   };
 
-  if(result.dept.length >= 0){
+  if(result.dept.length > 0){
     depttemp = result.dept[0].id;
   }
 
@@ -231,8 +231,6 @@ functions.createstore = function ( req, res, next ){
   if (errors) {
     req.flash('message', errors)
     res.redirect( '/stores' );
-    //res.send(errors);
-    //return;
   } else {
       new Stores({
       storeName   : req.body.storeName,
@@ -256,7 +254,6 @@ functions.editstore = function( req, res, next ){
     find().
     exec( function ( err, stores ){
       if( err ) return next( err );
-
       res.render( 'editstore', {
         title   : 'Trish\'s Shopping List',
         stores   : stores,
@@ -290,10 +287,6 @@ functions.destroystore = function ( req, res, next ){
 };
 
 
-
-
-
-
 functions.dept = function( req, res){
 async.parallel({
     Dept: function(cb){Dept.find({ 'created_by': { $eq: req.user.id } }).exec(cb);},
@@ -314,7 +307,7 @@ async.parallel({
 
 functions.createdept = function ( req, res, next ){
     //create the object from the list of stores
-    console.log("Stores: " + req.body.storesel);
+    //console.log("Stores: " + req.body.storesel);
     var fetchstring = [];
     if (req.body.storesel) {
       for (var i = 0; i < req.body.storesel.length; i++) {
@@ -327,14 +320,11 @@ functions.createdept = function ( req, res, next ){
   },
   function(err, result){
 
-    req.checkBody("deptName", "Enter a valid department name.").notEmpty();
-
+  req.checkBody("deptName", "Enter a valid department name.").notEmpty();
   var errors = req.validationErrors();
   if (errors) {
     req.flash('message', errors)
     res.redirect( '/dept' );
-    //res.send(errors);
-    //return;
   } else {
           new Dept({
           deptName   : req.body.deptName,
@@ -351,13 +341,11 @@ functions.createdept = function ( req, res, next ){
 };
 
 
-
 functions.editdept = function( req, res, next ){
   async.parallel({
       Stores: function (cb){ Stores.find({ 'created_by': { $eq: req.user.id } }).exec(cb);},
       Dept: function (cb){ Dept.find({ 'created_by': { $eq: req.user.id } }).exec(cb);}
   }, function(err, result){
-
       res.render( 'editdept', {
         title : 'Trish\'s Shopping List',
         stores : result.Stores,
@@ -426,7 +414,6 @@ functions.current_user = function ( req, res, next ){
   if( !user_id ){
     res.cookie( 'user_id', utils.uid( 32 ));
   }
-
   next();
 };
 

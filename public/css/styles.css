@@ -23,6 +23,7 @@ form button {
 }
 
 
+
 .btnadd {
 display: inline-block;
   padding: 6px 12px;
@@ -59,9 +60,10 @@ display: inline-block;
 .locked {
   position: fixed;
   top: 59px;
-  background-color:#ccc;
+  background-color:#fff;
   width: 100%;
   z-index: 9998;
+  border-bottom: 1px #888 solid;
 }
 
 .tdc {
@@ -97,4 +99,18 @@ body {
 
 .dropdown-menu {
   padding: 0px 0px;
+}
+
+.listbutton {
+  font-size:16px;
+  margin: 15px 0;
+}
+
+.center {
+  text-align: center !important;
+}
+
+.col-centered {
+    float: none;
+    margin: 0 auto;
 }

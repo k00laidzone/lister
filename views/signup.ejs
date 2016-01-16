@@ -1,9 +1,8 @@
     <% layout( 'layout' ) -%>
-    <div class="row">
-    <div class="col-sm-4">
-    <div class="panel panel-default">
-        <div class="panel-heading"><h3 class="panel-title"><%= title %></h3></div>
-          <div class="panel-body">
+    <div class="row tdc">
+    <div class="col-sm-4 work-list col-centered">
+        <h3><%= title %></h3>
+    <div class="work-space">
       <% if (message.length > 0) { %>
         <div class="alert alert-danger"><%= message %></div>
     <% } %>
@@ -19,15 +18,15 @@
             <input type="password" class="form-control" name="password">
         </div>
 
-        <button type="submit" class="btn btn-warning btn-lg">Signup</button>
+        <button type="submit"  class="btnadd btn-xs btn-default-add" style="margin:10px 0; padding: 4px 7px;">Signup</button>
     </form>
-
+    <div style="clear:both;">
     <hr>
 
     <p>Already have an account? <a href="/login">Login</a></p>
     <p>Or go <a href="/">home</a>.</p>
-
-  </div></div>
+</div>
+  </div>
   </div>
   </div>
 

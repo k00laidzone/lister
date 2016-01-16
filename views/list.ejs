@@ -11,8 +11,10 @@
      <% }; %>        
     <% } %>
 
+
+  <p class="listbutton" data-toggle="collapse" data-target="#topmenu">Create new shopping item</p>
   <form action="/create" method="post" accept-charset="utf-8" class="collapse in" id="topmenu">
-  <tr><td colspan=2> <p style="font-size:16px;">Create new shopping item</p></td></tr>
+
 	    <table width="100%" border="0">
 		    <tr>
 		    	<td>Quantity</td>
@@ -51,15 +53,12 @@
 		    	</td>
 		    </tr>
 		    <tr>
-		    	<td></td>
+		    	<td><button type="button" data-toggle="collapse" data-target="#topmenu" class="btnadd btn-xs btn-default" style="border:1px #888 solid; float:left;margin:10px 0; padding: 4px 7px;">close</button></td>
 		    	<td><button type="submit" class="btnadd btn-xs btn-default-add" style="margin:10px 0; padding: 4px 7px;">Add</button></td>
 		    </tr>
 		</table>
   </form>
 </div>
-	<div class="createbutton" style="width:100%; clear:both;">
-		<button type="button" class="btnadd btn-xs btn-default-add" data-toggle="collapse" data-target="#topmenu"><img src="/images/arrow_updown.png" height="30px"></button>
-	</div>
 </div>
 </div>
 <div class="row listpage tdc">
