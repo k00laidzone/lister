@@ -120,6 +120,10 @@ functions.create = function ( req, res, next ){
   }, function(err, result){
 
     req.checkBody("productName", "Enter a valid item name.").notEmpty();
+    req.checkBody("store", "Please add a store").notEmpty();
+    req.checkBody("dept", "Please add a department").notEmpty();
+
+
     var errors = req.validationErrors();
     if (errors) {
       req.flash('message', errors)

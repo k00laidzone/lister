@@ -114,3 +114,7 @@ body {
     float: none;
     margin: 0 auto;
 }
+
+.work-list a {
+  color:#8AB839;
+}
