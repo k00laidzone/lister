@@ -158,9 +158,8 @@
 }
 .some-notes
 {
-	padding: 0px 40px;
-	margin-top: 0px;
-	background-color: #fff;
+	padding: 40px 0; 
+	
 }
 .title h2
 {
