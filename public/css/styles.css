@@ -12,8 +12,9 @@ input, .dropinput {
 
 }
 
-form {
-	margin-bottom: 20px;
+form p {
+  line-height: 25px;
+  margin: 15px 0;
 }
 
 form button {
@@ -57,13 +58,43 @@ display: inline-block;
 
 .locked {
   position: fixed;
-  display: block;
-  clear: both;
-  height: 200px;
+  top: 59px;
+  background-color:#ccc;
   width: 100%;
   z-index: 9998;
 }
 
-.navbar-header {
-  overflow: hidden;
+.tdc {
+  margin-top: 75px;
+}
+
+.listpage.tdc {
+  margin-top: 125px;
+}
+
+body {
+  font-family: Calibri, Candara, Segoe, 'Segoe UI', Optima, Arial, sans-serif;
+}
+
+.createbutton {
+  text-align: center;
+}
+
+.createbutton button {
+  margin: 5px;
+  padding: 5px 10px;
+}
+
+.squeeze {
+  padding: 0 40px;
+}
+
+
+.nav .open>a, .nav .open>a:focus, .nav .open>a:hover {
+  background-color: #fff;
+  color: #212A3F;
+}
+
+.dropdown-menu {
+  padding: 0px 0px;
 }

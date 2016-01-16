@@ -6,34 +6,41 @@
 
     <% if( item._id == current ){ %>
 
-<div class="row">
-    <div class="col-sm-4">
-      <div class="panel panel-default">
-        <div class="panel-heading"><h3 class="panel-title">Edit <%= item.deptName %></h3></div>
-          <div class="panel-body">
+<div class="row tdc squeeze">
+    <div class="col-sm-4 work-list">
+    <h3>Edit <%= item.deptName %></h3></div>
+      <div class="work-space">
     
             <form class="update-form" action="/updatedept/<%= item._id %>" method="post" accept-charset="utf-8">
-              <input class="update-input" type="text" name="deptName" value="<%= item.deptName %>" />
-              <div>
-
+              <input class="update-input" type="text" name="deptName" style="margin:10px 0;" value="<%= item.deptName %>" />
+              <table width="100%" border="0" class="table table-striped">
               <% stores.forEach( function ( store ){ %>
                 <% if(item.store.indexOf(store.id) > -1){ %>
-                  <input type="checkbox" name="storesel[]" checked value="<%= store.id %>"><%= store.storeName %><br> 
+                  <tr>
+                    <td><%= store.storeName %></td>
+                    <td><input type="checkbox" name="storesel[]" style="width:20px; float:right; margin:0; padding:0;" checked value="<%= store.id %>"></td>
+                  </tr>
                 <% } else { %>
-                  <input type="checkbox" name="storesel[]" value="<%= store.id %>"><%= store.storeName %><br> 
+                  <tr>                  
+                    <td><%= store.storeName %></td>
+                    <td><input type="checkbox" name="storesel[]" style="width:20px; float:right; margin:0; padding:0;" value="<%= store.id %>"></td>
+                  </tr>
                 <% } %>
 
               <% }); %>
-
-            <br>
-            </div>
-            <button type="button" onClick="location.href='/destroydept/<%= item._id %>'" class="btn btn-xs btn-danger">Del</button>
-              <button class="btn btn-xs btn-success right" type="submit">Save</button>
+              <tr>
+                <td colspan="2">
+                  <button type="button" onClick="location.href='/destroydept/<%= item._id %>'" class="btnadd btn-xs btn-danger"  style="margin:10px 0; padding: 4px 7px;">Del</button>
+                  <button class="btnadd btn-xs btn-default-add" style="margin:10px 10px 10px 0; padding: 4px 7px;" type="submit">Save</button>
+                </td>
+              </tr>
+              </table>
+            
             </form>         
           </div>
         </div>
     </div>
-</div>
+
 
       <% } %>
 

@@ -69,7 +69,7 @@ var routes 		   = require( './routes' )(db, passport);
 
 // Routes
 // /app.use( routes.current_user );
-app.get(  '/',            	routes.index );
+app.get(  '/',            	        routes.index );
 app.get(  '/changestore/:store', 	isLoggedIn,routes.changestore );
 app.post( '/create',  				isLoggedIn, routes.create );
 app.get(  '/destroy/:id',  			isLoggedIn, routes.destroy );
@@ -88,7 +88,7 @@ app.get( '/editdept/:id', 			isLoggedIn, routes.editdept );
 app.post( '/updatedept/:id', 		isLoggedIn, routes.updatedept );
 app.get( '/destroydept/:id', 		isLoggedIn, routes.destroydept );
 
-app.get('/home', isLoggedIn,  routes.home);
+app.get('/list', isLoggedIn,  routes.list);
 
 app.get('/login', function(req, res) {
         // render the page and pass in any flash data if it exists
@@ -113,7 +113,7 @@ app.post('/signup', passport.authenticate('local-signup', {
 
  // process the login form
     app.post('/login', passport.authenticate('local-login', {
-        successRedirect : '/profile', // redirect to the secure profile section
+        successRedirect : '/list', // redirect to the secure profile section
         failureRedirect : '/login', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
     }));

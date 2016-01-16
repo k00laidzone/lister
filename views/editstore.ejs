@@ -5,24 +5,23 @@
 
     <% if( item._id == current ){ %>
     
-<div class="row">
-    <div class="col-sm-4">
-      <div class="panel panel-default">
-        <div class="panel-heading"><h3 class="panel-title">Edit <%= item.storeName %></h3></div>
-          <div class="panel-body">
+<div class="row tdc squeeze">
+    <div class="col-sm-4 work-list">
+      <h3>Edit <%= item.storeName %></h3>
+          <div class="work-space">
     
             <form action="/updatestore/<%= item._id %>" method="post" accept-charset="utf-8">
               <input type="text" name="storeName" value="<%= item.storeName %>" />
               <input type="text" name="address" value="<%= item.address %>" />
               <br>
-              <button type="button" onClick="location.href='/destroystore/<%= item._id %>'" class="btn btn-xs btn-danger">Del</button>
-              <button class="btn btn-xs btn-success right" type="submit">Save</button>
+              <button type="button" onClick="location.href='/destroystore/<%= item._id %>'" class="btnadd btn-xs btn-danger"  style="margin:10px 0; padding: 4px 7px;">Del</button>
+              <button type="submit" class="btnadd btn-xs btn-default-add" style="margin:10px 10px 10px 0; padding: 4px 7px;">Save</button>
             </form>
 
           </div>
         </div>
     </div>
-</div>
+
 
     <% } %>
 

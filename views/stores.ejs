@@ -1,14 +1,7 @@
 <% layout( 'layout' ) -%>
 
-<div class="jumbotron">
-    <h1>Stores</h1>
-    <p>Welcome to the stores section</p>
-</div>
-
-
-
-<div class="row">
-    <div class="col-sm-4">
+<div class="row tdc">
+    <div class="col-sm-4 squeeze">
     <% if (message.length > 0) { %>
      <% for (var i = 0; i < message.length; i++) { %>
        <div class="alert alert-danger"><%= message[i].msg %></div>
@@ -16,7 +9,7 @@
     <% } %>
   <form action="/createstore" method="post" accept-charset="utf-8">
     <table width="100%">
-    <tr><td colspan=2> <strong>Create new store </strong></td></tr>
+    <tr><td colspan=2><p style="font-size:16px;">Create new store </p></td></tr>
 	    <tr>
 	    	<td>Store</td>
 	    	<td><input class="input" type="text" name="storeName" value="" /></td>
@@ -25,7 +18,7 @@
 	    	<td>Address</td>
 	    	<td><input class="input" type="text" name="address" /></td>
 	    </tr>
-      <tr><td colspan="2"><button type="submit" class="btn btn-xs btn-default">Add</button></td></tr>
+      <tr><td colspan="2"><button type="submit" class="btnadd btn-xs btn-default-add" style="margin:10px 0; padding: 4px 7px;">Add</button></td></tr>
 	 </table>
   </form>
 </div>
@@ -33,16 +26,15 @@
 
 
 <div class="row">
-    <div class="col-sm-4">
-      <div class="panel panel-default">
-        <div class="panel-heading"><h3 class="panel-title">Stores</h3></div>
-          <div class="panel-body">
+    <div class="col-sm-4 work-list">
+    <h3>Stores</h3>
+          <div class="work-space">
           <table width="100%" border="0" class="table table-striped">
             <% stores.forEach( function ( item ){ %>
             <tr>
                 <td style="padding:5px"><a class="update-link" href="/editstore/<%= item._id %>" title="Update this store"><%= item.storeName %></a></td>
 
-                <td align="right"><button type="button" onClick="location.href='/destroystore/<%= item._id %>'" class="btn btn-xs btn-danger">Del</button></td>
+                <td align="right"><a href="/destroystore/<%= item._id %>"><img src="/images/x.png" width="15px"></a></td>
             </tr>
             <% }); %>
             </table>
@@ -50,4 +42,3 @@
           </div>
         </div>
     </div>
-</div>

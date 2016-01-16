@@ -31,7 +31,7 @@
 }
 .menu li a
 {
-	color: #434F5B;
+	color: #fff;
 	font-weight:500;
 	font-family: 'Poppins', sans-serif;
 	line-height: 29px;
@@ -41,8 +41,8 @@
 }
 .menu li a:hover
 {
-	background-color: #212A3F;
-	color:#fff;
+	background-color: #fff;
+	color:#212A3F !important;
 }
 .menu-button
 {
@@ -158,8 +158,8 @@
 }
 .some-notes
 {
-	padding: 0px 10px;
-	margin-top: 60px;
+	padding: 0px 40px;
+	margin-top: 0px;
 	background-color: #fff;
 }
 .title h2

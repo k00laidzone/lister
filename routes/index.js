@@ -19,7 +19,7 @@ functions.index = function ( req, res, next ){
   })
 }
 
-functions.home = function ( req, res, next ){
+functions.list = function ( req, res, next ){
   async.parallel({
       stores: function (cb){ Stores.find({ 'created_by': { $eq: req.user.id } }).exec(cb);},
       lister: function (cb){ Lister.find({ 'created_by': { $eq: req.user.id } }).populate('dept store').exec(cb);},
@@ -62,7 +62,7 @@ functions.home = function ( req, res, next ){
       }
     };
 
-      res.render( 'home', {
+      res.render( 'list', {
         title         : 'Trish\'s Shopping List',
         stores        : result.stores,
         list          : result.lister,
@@ -123,7 +123,7 @@ functions.create = function ( req, res, next ){
     var errors = req.validationErrors();
     if (errors) {
       req.flash('message', errors)
-      res.redirect( '/home' );
+      res.redirect( '/list' );
     } else {
       var session    = req.session;
       session.dept   = req.body.dept;
@@ -136,7 +136,7 @@ functions.create = function ( req, res, next ){
           created_by : req.user.id
       }).save( function ( err, todo, count ){
         if( err ) return next( err );
-        res.redirect( '/home' );
+        res.redirect( '/list' );
       });
     }
   }); 
@@ -148,7 +148,7 @@ functions.destroy = function ( req, res, next ){
   Lister.findById( req.params.id, function ( err, lister ){
     lister.remove( function ( err, lister ) {
       if( err ) return next( err );
-      res.redirect( '/home' );
+      res.redirect( '/list' );
     });
   });
 };
@@ -160,8 +160,6 @@ functions.edit = function( req, res, next ){
       lister: function (cb){ Lister.find({ 'created_by': { $eq: req.user.id } }).populate('dept store').exec(cb);},
       dept: function (cb){ Dept.find({ 'created_by': { $eq: req.user.id } }).populate({path: 'store'}).exec(cb);}
   }, function(err, result){
-
-
 
     var storetemp  = result.stores[0].id;
     var deptlist   = [];
@@ -202,7 +200,7 @@ functions.update = function( req, res, next ){
     lister.created_by   = req.user.id
     lister.save( function ( err, lister, count ){
       if( err ) return next( err );
-      res.redirect( '/home' );
+      res.redirect( '/list' );
     });
   });
 };
