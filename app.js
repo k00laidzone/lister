@@ -5,7 +5,6 @@
 module.exports = function(db){
 var express        = require( 'express' );
 var app    		   = express();
-
 var passport 	   = require( 'passport' );
 var flash    	   = require( 'connect-flash' );
 
@@ -15,6 +14,7 @@ require('./config/passport')(passport);
 var cookieParser   = require( 'cookie-parser');
 var bodyParser     = require( 'body-parser' );
 var session 	   = require( 'express-session');
+
 var validator 	   = require('express-validator');
 
 var path           = require( 'path' );
@@ -30,7 +30,6 @@ var static         = require( 'serve-static' );
 
 
 // all environments
-app.set( 'port', process.env.PORT || 3000 );
 app.engine( 'ejs', engine );
 app.set( 'views', path.join( __dirname, 'views' ));
 app.set( 'view engine', 'ejs' );

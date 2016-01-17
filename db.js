@@ -83,4 +83,13 @@ mongoose.model( 'Stores', Stores );
 mongoose.model( 'Dept', Dept );
 mongoose.model( 'Settings', Settings );
 
-mongoose.connect( 'mongodb://testuser:testuser@ds039135.mongolab.com:39135/abc123' );
+
+
+
+
+if (process.env.NODE_ENV == 'production') { 
+        mongoose.connect( 'mongodb://productionlister:M!crosoft1@ds047355.mongolab.com:47355/listerprod' );
+    } else {
+        mongoose.connect( 'mongodb://testuser:testuser@ds039135.mongolab.com:39135/abc123' );
+ }
+
