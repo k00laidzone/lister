@@ -106,7 +106,12 @@
 
 					<% if(item.dept[0].id == dept.id && item.store[0].id == store.id){ %>
 					<tr>
-					<td style="padding:5px"><a class="update-link" href="/edit/<%= item._id %>" title="Update this shopping item"><%= item.productName %></a></td>
+					<td style="padding:5px; width:70%;"><a class="update-link" href="/edit/<%= item._id %>" title="Update this shopping item"><%= item.productName %></a></td>
+						<% if (item.quantity > 1) { %>
+						<td>Qty: <%= item.quantity %></td>
+						<% } else { %>
+						<td></td>
+						<% } %>
 					<td align="right"><a href="/destroy/<%= item._id %>"><img src="/images/x.png" width="15px"></a></td>
 					
 					</tr>
