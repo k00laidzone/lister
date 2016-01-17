@@ -359,7 +359,7 @@ async.parallel({
 
 functions.createdept = function ( req, res, next ){
     //create the object from the list of stores
-    //console.log("Stores: " + req.body.storesel);
+    console.log("Stores: " + req.body.storesel);
     var fetchstring = [];
     if (req.body.storesel) {
       for (var i = 0; i < req.body.storesel.length; i++) {
@@ -372,6 +372,8 @@ functions.createdept = function ( req, res, next ){
     Dept: function (cb){ Dept.find({ 'created_by': { $eq: req.user.id } }).exec(cb);}
   },
   function(err, result){
+    console.log("Stores result: "+result.Stores);
+    console.log("Dept: "+result.Dept);
 
   req.checkBody("deptName", "Enter a valid department name.").notEmpty();
   var errors = req.validationErrors();

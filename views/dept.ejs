@@ -21,7 +21,7 @@
           <% stores.forEach( function ( store ){ %>
           <tr>
             <td valign="middle"><%= store.storeName %></td>
-            <td><input type="checkbox" name="storesel[]" style="width:20px; float:right; margin:0; padding:0;" value="><%= store.id %>"></td>
+            <td><input type="checkbox" name="storesel[]" style="width:20px; float:right; margin:0; padding:0;" value="<%= store.id %>"></td>
           </tr>               
           <% }); %>
         </table>
