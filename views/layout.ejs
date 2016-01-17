@@ -24,26 +24,27 @@
     <div class="row">
       <div class="col-md-4 ">
         <div class="navbar-header">
+              <% if (login) { %>
               <button type="button" class="navbar-toggle menu-button" data-toggle="collapse" data-target="#myNavbar">
                   <span class="glyphicon glyphicon-align-justify"></span>
               </button>
+              <% } else { %>
+                <button type="button" onClick="location.href='/signup'" class="btnadd btn-xs btn-default-add" style="border-color:#fff;margin:10px 0; padding: 4px 7px;float:right;">Sign Up</button>
+                <button type="button" onClick="location.href='/login'" class="btnadd btn-xs btn-default-add" style=" border-color:#fff; margin:10px 5px 10px 0; padding: 4px 7px; float:right;">Log in</button>
+
+        <% } %>
                 <a class="navbar-brand logo" href="/">Trish&#39;s Shopping List</a>
                 <a class="navbar-brand logosmall" href="/"><img src="/images/logo.png" data-toggle="collapse" data-target="#myNavbar"></a>
 
           </div>
       </div>
       <div class="col-md-8">
+      <% if (login) {%>
         <nav class="collapse navbar-collapse" id="myNavbar" role="navigation">
           <ul class="nav navbar-nav navbar-right menu">
-              <% if (login) {;%>
               <li><a href="/list" class="page-scroll active">List</a></li>
               <li><a href="/dept" class="page-scroll active">Departments</a></li>
               <li><a href="/stores" class="page-scroll active">Stores</a></li>
-            <% } %>
-
-              
-                
-                <% if (login) {;%>
               <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Account <span class="caret"></span></a>
                 <ul class="dropdown-menu">
@@ -51,18 +52,10 @@
                   <li><a href="/logout" class="page-scroll active">Logout</a></li>
                 </ul>
                 </li>
-                <% } else { %>
-                <li>
-                <button type="button" onClick="location.href='/login'" class="btnadd btn-xs btn-default-add" style=" border-color:#fff; margin:10px 5px 10px 0; padding: 4px 7px;">Log in</button>
-                <button type="button" onClick="location.href='/signup'" class="btnadd btn-xs btn-default-add" style="border-color:#fff;margin:10px 0; padding: 4px 7px;">Sign Up</button>
-                </li>
-                <% } %>
-                
-                
-
-
           </ul>
         </nav>
+        <% } %>
+
       </div>
     </div>
   </div>

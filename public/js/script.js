@@ -32,12 +32,12 @@ function setCookie(cname, cvalue, exdays) {
     document.cookie = cname + "=" + cvalue + "; " + expires;
 } 
 
-$(".collapse").on('hidden.bs.collapse', function(){
+$("#topmenu").on('hidden.bs.collapse', function(){
     //alert('The collapsible content is now fully hidden.');
     setCookie('topmenu', 'closed','1');
 });
 
-$(".collapse").on('shown.bs.collapse', function(){
+$("#topmenu").on('shown.bs.collapse', function(){
     //alert('The collapsible content is now fully shown.');
     setCookie('topmenu', 'open','1');
 });
@@ -46,3 +46,4 @@ var check = getCookie('topmenu');
 if(check == 'closed'){
   $(".collapse").collapse("hide");
 }
+

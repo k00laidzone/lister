@@ -35,7 +35,7 @@ functions.list = function ( req, res, next ){
   if (result.stores.length > 0) {
     storetemp = result.stores[0].id;
   } else { 
-    req.flash('message', [{'msg':'Please Create a new store'}])
+    req.flash('message', [{'msg':'Please create a store'}])
       res.redirect( '/stores' );
   };
 
@@ -444,11 +444,22 @@ functions.updatedept = function( req, res, next ){
 
 
 functions.destroydept = function ( req, res, next ){
-  Dept.findById( req.params.id, function ( err, dept ){
-    dept.remove( function ( err, dept ){
+  async.parallel({
+    Dept:   function(cb){Dept.findById(req.params.id).exec(cb);},
+    Lister: function(cb){Lister.find({ 'created_by': { $eq: req.user.id } }).exec(cb);}
+  },
+  function(err, result){
+
+    for (var i = 0; i < result.Lister.length; i++) {
+      if (result.Lister[i].dept.indexOf(req.params.id) > -1) {
+        result.Lister[i].remove();
+      };
+    };
+
+    result.Dept.remove( function ( err, dept ){
       if( err ) return next( err );
       res.redirect( '/dept' );
-    });
+    });  
   });
 };
 
