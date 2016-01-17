@@ -24,6 +24,18 @@ var Dept = new Schema({
 
 });
 
+var Settings = new Schema({
+    setting          : String,
+    types            : [{
+        id           : String,
+        typeName     : String,
+        depts        : [{
+            id       : String,
+            deptName : String
+        }],
+    }],
+});
+
 var userSchema = new Schema({
 
     local            : {
@@ -69,5 +81,6 @@ mongoose.model( 'Lister', Lister );
 mongoose.model( 'User', userSchema);
 mongoose.model( 'Stores', Stores );
 mongoose.model( 'Dept', Dept );
+mongoose.model( 'Settings', Settings );
 
 mongoose.connect( 'mongodb://testuser:testuser@ds039135.mongolab.com:39135/abc123' );

@@ -7,6 +7,7 @@ var Lister   = mongoose.model( 'Lister' );
 var Stores   = mongoose.model( 'Stores' );
 var User     = mongoose.model( 'User' );
 var Dept     = mongoose.model( 'Dept' );
+var Settings = mongoose.model( 'Settings' );
 var util     = require('util');
 var async    = require('async');
 
@@ -214,12 +215,15 @@ functions.stores = function( req, res){
   
   async.parallel({
       Stores: function (cb){ Stores.find({ 'created_by': { $eq: req.user.id } }).exec(cb);},
-      Lister: function (cb){ Lister.find({ 'created_by': { $eq: req.user.id } }).exec(cb);}
+      Lister: function (cb){ Lister.find({ 'created_by': { $eq: req.user.id } }).exec(cb);},
+      storeTypes: function (cb){ Settings.find({ 'setting': { $eq: 'storeTypes' } }).exec(cb);}
   }, function(err, result){
+    //console.log(result.storeTypes);
       res.render( 'stores', {
         title : 'Trish\'s Shopping List',
-        stores : result.Stores,
+        stores : result.Stores, 
         lister : result.Lister,
+        storeTypes: result.storeTypes[0],
         message: req.flash('message')
       });
 
@@ -231,6 +235,7 @@ functions.stores = function( req, res){
 functions.createstore = function ( req, res, next ){
 
   req.checkBody("storeName", "Enter a valid store name.").notEmpty();
+  req.checkBody("storeType", "Please select a store type.").notEmpty();
   var errors = req.validationErrors();
   if (errors) {
     req.flash('message', errors)
@@ -244,9 +249,48 @@ functions.createstore = function ( req, res, next ){
       
   }).save( function ( err, stores, count ){
     if( err ) return next( err );
-    res.redirect( '/stores' );
-  });
-    
+
+    // console.log("Store: "+stores);
+  async.parallel({
+        Stores: function (cb){ Stores.find({ 'created_by': { $eq: req.user.id } }).exec(cb);},
+        myDepts: function (cb){ Dept.find({ 'created_by': { $eq: req.user.id } }).exec(cb);},
+        storeTypes: function (cb){ Settings.find({ 'setting': { $eq: 'storeTypes' } }).exec(cb);}
+    }, function(err, result){
+
+    //Settings.find({ 'setting': { $eq: 'storeTypes' } }).exec(
+      //function( err, settings ){
+    var settings = result.storeTypes;
+
+        for (var i = 0; i < settings[0].types.length; i++) {
+          if (settings[0].types[i].id == req.body.storeType) {
+            //console.log("Found: "+settings[0].types[i]);
+            for (var z = 0; z < settings[0].types[i].depts.length; z++) {
+              var match = false;
+              for (var q = 0; q < result.myDepts.length; q++) {
+                
+                if (result.myDepts[q].deptName == settings[0].types[i].depts[z].deptName) {
+                  match = true;
+                  result.myDepts[q].store.push(stores);
+                  result.myDepts[q].save();
+                  console.log("Matched: " +result.myDepts[q].deptName);
+                };
+              };
+              if (!match) {
+                new Dept({
+                deptName   : settings[0].types[i].depts[z].deptName,
+                store      : stores,
+                message    : [],
+                created_by : req.user.id
+                }).save();
+              };
+            };
+          };
+        };
+        res.redirect( '/stores' );
+      //});//Ends Settings.find()
+
+    });//Ends async
+  });    
 
 };
 }

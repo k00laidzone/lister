@@ -18,6 +18,17 @@
 	    	<td>Address</td>
 	    	<td><input class="input" type="text" name="address" /></td>
 	    </tr>
+      <tr>
+        <td>Store Type</td>
+        <td>
+        <select id="storetype" name='storeType' class="dropinput">
+        <option value="">Choose Store Type</option>
+          <% storeTypes.types.forEach( function ( item ){ %>
+            <option value="<%= item.id %>"><%= item.typeName %></option>
+          <% }); %>
+        </select>
+        </td>
+      </tr>
       <tr><td colspan="2"><button type="submit" class="btnadd btn-xs btn-default-add" style="margin:10px 0; padding: 4px 7px;">Add</button></td></tr>
 	 </table>
   </form>
