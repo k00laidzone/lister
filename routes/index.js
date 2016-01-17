@@ -87,6 +87,7 @@ functions.changestore = function ( req, res, next ){
       dept: function (cb){ Dept.find({ 'created_by': { $eq: req.user.id } }).populate({path: 'store'}).exec(cb);}
   }, function(err, result){
 
+
     var session       = req.session;
     var storetemp     = req.params.store;
     session.store     = req.params.store;
