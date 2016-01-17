@@ -12,7 +12,6 @@ $('#store').on('change',function(){
 });
 
 
-
 //Top menu management on the list page.
 function getCookie(cname) {
     var name = cname + "=";

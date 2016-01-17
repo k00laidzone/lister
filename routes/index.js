@@ -368,7 +368,8 @@ functions.createdept = function ( req, res, next ){
     };
 
   async.parallel({
-    Stores: function (cb){ Stores.find({ '_id':{ $in: fetchstring }}).exec(cb);}
+    Stores: function (cb){ Stores.find({ '_id':{ $in: fetchstring }}).exec(cb);},
+    Dept: function (cb){ Dept.find({ 'created_by': { $eq: req.user.id } }).exec(cb);}
   },
   function(err, result){
 
@@ -378,16 +379,30 @@ functions.createdept = function ( req, res, next ){
     req.flash('message', errors)
     res.redirect( '/dept' );
   } else {
-          new Dept({
-          deptName   : req.body.deptName,
-          store      : result.Stores,
-          message    : [],
-          created_by : req.user.id
-      }).save( function ( err, dept, count ){
-        if( err ) return next( err );
+
+      var match = false;
+      for (var i = 0; i < result.Dept.length; i++) {
+        if (result.Dept[i].deptName.toLowerCase() == req.body.deptName.toLowerCase()) {
+          req.flash('message', [{'msg': req.body.deptName + ' already exists'}]);
+          match = true;
+        }; 
+      };
+
+      if (match == false) {
+        new Dept({
+        deptName   : req.body.deptName,
+        store      : result.Stores,
+        message    : [],
+        created_by : req.user.id
+        }).save( function ( err, dept, count ){
+          if( err ) return next( err );
+        });
+      };
         res.redirect( '/dept' );
-      });
+  
   }
+
+
 
   });
 };
