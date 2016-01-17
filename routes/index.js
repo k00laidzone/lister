@@ -34,6 +34,9 @@ functions.list = function ( req, res, next ){
 
   if (result.stores.length > 0) {
     storetemp = result.stores[0].id;
+  } else { 
+    req.flash('message', [{'msg':'Please Create a new store'}])
+      res.redirect( '/stores' );
   };
 
   if (session.store) {
@@ -54,7 +57,7 @@ functions.list = function ( req, res, next ){
     var stores    = result.stores;
 
     for (var i = 0; i < dept.length; i++) {
-      if(dept[i].store.length >= 0){
+      if(dept[i].store.length > 0){
           for (var s = 0; s < dept[i].store.length; s++) {
             if(dept[i].store[s].id.indexOf(storetemp) > -1){
               deptlist.push(dept[i]);

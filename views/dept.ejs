@@ -11,12 +11,13 @@
     <table width="100%">
     <tr><td colspan=2> <p style="font-size:16px;">Create new department</p> </td></tr>
       <tr>
-        <td>Dept</td>
+        <td>Dept Name</td>
         <td><input class="input" type="text" name="deptName" value="" style="margin-bottom:15px;" /></td>
       </tr>
       <tr>
         <td colspan="2">
         <table width="100%" border="0" class="table table-striped">
+        <p>Connect this new deparment to the following stores:</p>
           <% stores.forEach( function ( store ){ %>
           <tr>
             <td valign="middle"><%= store.storeName %></td>

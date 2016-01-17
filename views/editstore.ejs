@@ -11,11 +11,27 @@
           <div class="work-space">
     
             <form action="/updatestore/<%= item._id %>" method="post" accept-charset="utf-8">
-              <input type="text" name="storeName" value="<%= item.storeName %>" />
-              <input type="text" name="address" value="<%= item.address %>" />
-              <br>
-              <button type="button" onClick="location.href='/destroystore/<%= item._id %>'" class="btnadd btn-xs btn-danger"  style="margin:10px 0; padding: 4px 7px;">Del</button>
-              <button type="submit" class="btnadd btn-xs btn-default-add" style="margin:10px 10px 10px 0; padding: 4px 7px;">Save</button>
+            <table width="100%">
+            <tr>
+              <td style="width:120px;">Store Name</td>
+              <td><input type="text" name="storeName" value="<%= item.storeName %>" /></td>
+            </tr>
+              
+            <tr>
+              <td>Store Address</td>
+              <td><input type="text" name="address" value="<%= item.address %>" /></td>
+            </tr>
+
+            <tr>
+              <td colspan="2">
+                <button type="button" onClick="location.href='/destroystore/<%= item._id %>'" class="btnadd btn-xs btn-danger"  style="margin:10px 0; padding: 4px 7px;">Del</button>
+                <button type="submit" class="btnadd btn-xs btn-default-add" style="margin:10px 10px 10px 0; padding: 4px 7px;">Save</button>
+              </td>
+            </tr>
+              
+
+              
+              </table>
             </form>
 
           </div>
