@@ -41,8 +41,13 @@
 }
 .menu li a:hover
 {
-	background-color: #fff;
+	background-color: #999;
 	color:#212A3F !important;
+}
+
+.menu li a:active, .menu li a:visited 
+{
+	color: #fff !important;
 }
 .menu-button
 {
