@@ -429,8 +429,10 @@ functions.editdept = function( req, res, next ){
 functions.updatedept = function( req, res, next ){
     //create the object from the list of stores
     var fetchstring = [];
-    for (var i = 0; i < req.body.storesel.length; i++) {
-      fetchstring.push(req.body.storesel[i]);
+    if (req.body.storesel) {
+      for (var i = 0; i < req.body.storesel.length; i++) {
+        fetchstring.push(req.body.storesel[i]);
+      };
     };
 
   async.parallel({
