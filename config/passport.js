@@ -28,6 +28,8 @@ module.exports = function(passport) {
         });
     });
 
+    
+
     // =========================================================================
     // LOCAL SIGNUP ============================================================
     // =========================================================================
@@ -41,7 +43,7 @@ module.exports = function(passport) {
         passReqToCallback : true // allows us to pass back the entire request to the callback
     },
     function(req, email, password, done) {
-
+    //console.log("Confirm Password: "+req.param('confirmpassword'));
         // asynchronous
         // User.findOne wont fire unless data is sent back
         process.nextTick(function() {
@@ -52,6 +54,10 @@ module.exports = function(passport) {
             // if there are any errors, return the error
             if (err)
                 return done(err);
+
+            if (req.param('confirmpassword') !== req.param('password')) {
+                return done(null, false, req.flash('signupMessage', 'The passwords dont match.'));
+            };
 
             // check to see if theres already a user with that email
             if (user) {

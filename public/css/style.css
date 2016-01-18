@@ -60,7 +60,7 @@
 {	
 	background-attachment:fixed;
 		background-color: #645862;
-		background-image:  url("/images/produce.jpg");
+		background-image:  url("/images/produce.jpg"); 
 		background-position: top center;
 		background-repeat: no-repeat;
 		background-size: cover;
@@ -497,6 +497,12 @@ input[placeholder], [placeholder], *[placeholder] {
 
 @media (min-width: 380px) and (max-width: 768px)
 {
+
+.backg
+{	
+	background-image:  url("/images/produce-section-mobile.jpg");
+}
+
 	.text-box p.intro {
     font-size: 22px;
 	}
@@ -533,6 +539,11 @@ input[placeholder], [placeholder], *[placeholder] {
 }
 @media (min-width: 0px) and (max-width: 379px)
 {
+
+.backg
+{	
+	background-image:  url("/images/produce-section-mobile-small.jpg");
+}
 	.text-box p.intro {
     font-size: 22px;
 	}
