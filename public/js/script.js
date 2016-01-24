@@ -1,3 +1,4 @@
+
 $('#store').on('change',function(){
   $.get('/changestore/'+this.value,function(data){
     $('#dept').contents().remove();
@@ -45,4 +46,3 @@ var check = getCookie('topmenu');
 if(check == 'closed'){
   $(".collapse").collapse("hide");
 }
-

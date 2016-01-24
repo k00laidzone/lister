@@ -92,13 +92,12 @@ functions.changestore = function ( req, res, next ){
     var storetemp     = req.params.store;
     session.store     = req.params.store;
     session.dept      = req.params.dept;
-    console.log("Stored: "+req.params.dept);
     var deptlist      = [];
     var lister        = result.lister;
     var dept          = result.dept;
     var stores        = result.stores;
 
-    console.log("Change Store Returned: "+req.params.store);
+    //console.log("Change Store Returned: "+req.params.store);
 
     var deptlist = [];
     //var storetemp = req.params.store;
@@ -330,11 +329,27 @@ functions.updatestore = function( req, res, next ){
 
 
 functions.destroystore = function ( req, res, next ){
-  Stores.findById( req.params.id, function ( err, stores ){
-    stores.remove( function ( err, stores ){
-      if( err ) return next( err );
-      res.redirect( '/stores' );
+
+ async.parallel({
+      stores: function (cb){ Stores.find({ 'id': { $eq: req.params.id } }).exec(cb);},
+      lister: function (cb){ Lister.find({ 'store': { $eq: req.params.id } }).exec(cb);},
+  }, function(err, result){
+
+
+    var list = result.lister;
+    for (var i = 0; i < list.length; i++) {
+      list[i].remove( function ( err, item ){
+        if( err ) return next( err );
+      });
+    };
+
+    Stores.findById( req.params.id, function ( err, stores ){
+      stores.remove( function ( err, stores ){
+        if( err ) return next( err );
+        res.redirect( '/stores' );
+      });
     });
+
   });
 };
 

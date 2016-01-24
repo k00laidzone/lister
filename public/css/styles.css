@@ -122,3 +122,30 @@ body {
 .footer {
   margin-top: 200px;
 }
+
+#changefooter {
+  position: relative;
+  display: inline-block;
+  height: 20px;
+  background-color: #f22;
+  text-align: left;
+  overflow-y: hidden;
+  padding: 0;
+  margin: 0;
+  width: 200px;
+}
+
+#changefooter .visable {
+  position: absolute;
+  display: inline-block;
+  margin: 0 0 0 4px;
+  padding: 0;
+}
+
+#changefooter .invisable {
+  position: absolute;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  top: -200px;
+}

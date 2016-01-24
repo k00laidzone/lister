@@ -63,70 +63,22 @@
 </div>
 <div class="row listpage tdc">
 
-<% stores.forEach( function ( store ){ %>
-<% var checkstore = false; %>
 
-<% list.forEach( function ( item ){ %>
-
-	<% if(item.store.length > 0){ %>
-		<% item.store.forEach( function ( prod ){ %>
-			<% if(prod.id == store.id){ %>
-				<% checkstore = true; %>
-			<% } %>
-
-		<% }); %>
-	<% } %>
-<% }); %>
-
-<% if(checkstore == true){ %>
-      <div class="col-md-4 col-sm-6 col-xs-12 work-list">
-        <h3><%= store.storeName %></h3>
-        <div class="work-space">
-        
-		<% dept.forEach( function ( dept ){ %>
-
-		<% var checkdept = false; %>
-			<% list.forEach( function ( item ){ %>
-				<% item.dept.forEach( function ( itemdept ){ %>
-
-					<% if(itemdept.id == dept.id && store.id == item.store[0].id){ %>
-						<% checkdept = true; %>
-
-					<% } %>
-
-				<% }); %>
-
-			<% }); %>
+<% list.forEach( function ( item ) { 
+	var element = document.createElement("div");
+	element.className = "col-md-4 col-sm-6 col-xs-12 work-list";
+	document.getElementById("items").appendChild(element);
+	 }); %>
 
 
-			<% if(checkdept == true){ %>
-				<h5><%= dept.deptName %></h5>
-				<table width="100%" border="0" class="table table-striped">
-				<% list.forEach( function ( item ){ %>
+<!-- <div class="col-md-4 col-sm-6 col-xs-12 work-list">
+    <h3><%= store.storeName %></h3>
+    <div class="work-space">
+    </div>
+</div> -->
 
-					<% if(item.dept[0].id == dept.id && item.store[0].id == store.id){ %>
-					<tr>
-					<td style="padding:5px; width:70%;"><a class="update-link" href="/edit/<%= item._id %>" title="Update this shopping item"><%= item.productName %></a></td>
-						<% if (item.quantity > 1) { %>
-						<td>Qty: <%= item.quantity %></td>
-						<% } else { %>
-						<td></td>
-						<% } %>
-					<td align="right"><a href="/destroy/<%= item._id %>"><img src="/images/x.png" width="15px"></a></td>
-					
-					</tr>
-					<% } %>
+<div id="items"></div>
 
-				<% }); %>
+</div>
 
 
-				</table>
-			<% } %>
-		<% }); %>
-
-        </div>
-      </div>
-
-<% } %>
-<% }); %>
-      </div>
